@@ -1,20 +1,34 @@
-Personal Finance Tracker
-A modern and responsive Personal Finance Tracker web application built using Python Flask. This application helps users manage their income, expenses, savings, and financial insights with interactive charts and category-based tracking. Live_Link: https://personal-finance-tracker-hccv.onrender.com
-🚀 Features
-💰 Add and manage income & expenses
-📊 Interactive charts and analytics
-📅 Track transactions by date
-🏷️ Expense categorization
-📱 Responsive UI for desktop and mobile
-🔐 Secure environment configuration
-☁️ Ready for Render deployment
-🛠️ Tech Stack
-Backend: Python, Flask
-Frontend: HTML, CSS, JavaScript
-Database: SQLite
-Deployment: Render
-📂 Project Structure
-personal-finance-tracker/
+# Personal Finance Tracker
+
+A modern and responsive Personal Finance Tracker web application built using Python Flask. This application helps users manage their income, expenses, savings, and financial insights with interactive charts and category-based tracking.
+live link:  https://personal-finance-tracker-hccv.onrender.com
+---
+
+## 🚀 Features
+
+- 💰 Add and manage income & expenses
+- 📊 Interactive charts and analytics
+- 📅 Track transactions by date
+- 🏷️ Expense categorization
+- 📱 Responsive UI for desktop and mobile
+- 🔐 Secure environment configuration
+- ☁️ Ready for Render deployment
+
+---
+
+## 🛠️ Tech Stack
+
+- **Backend:** Python, Flask
+- **Frontend:** HTML, CSS, JavaScript
+- **Database:** SQLite
+- **Deployment:** Render
+
+---
+
+## 📂 Project Structure
+
+```bash
+Personal-Finance-Tracker/
 │
 ├── static/               # CSS, JS, Images
 ├── templates/            # HTML Templates
@@ -25,53 +39,115 @@ personal-finance-tracker/
 ├── .env.example          # Environment Variables Example
 ├── DEPLOYMENT.md         # Deployment Guide
 └── README.md             # Project Documentation
-⚙️ Installation
-1️⃣ Clone the Repository
-git clone https://github.com/Sunny86456/personal-finance-tracker.git
-cd personal-finance-tracker
-2️⃣ Create Virtual Environment
+```
+
+---
+
+## ⚙️ Installation
+
+### 1️⃣ Clone the Repository
+
+```bash
+git clone https://github.com/kriitikaaaaaaa/Personal-Finance-Tracker.git
+cd Personal-Finance-Tracker
+```
+
+### 2️⃣ Create Virtual Environment
+
+```bash
 python -m venv venv
-3️⃣ Activate Virtual Environment
-Windows
+```
+
+### 3️⃣ Activate Virtual Environment
+
+#### Windows
+
+```bash
 venv\Scripts\activate
-Mac/Linux
+```
+
+#### Mac/Linux
+
+```bash
 source venv/bin/activate
-4️⃣ Install Dependencies
+```
+
+### 4️⃣ Install Dependencies
+
+```bash
 pip install -r requirements.txt
-5️⃣ Run the Application
+```
+
+### 5️⃣ Run the Application
+
+```bash
 python app.py
-🌐 Deployment
+```
+
+---
+
+## 🌐 Deployment
+
 This project is configured for deployment on Render.
 
 Check the deployment guide here:
 
+```bash
 DEPLOYMENT.md
-📸 Screenshots
+```
+
+---
+
+## 📸 Screenshots
+
 Add your screenshots here after uploading them.
 
+```bash
 screenshots/home.png
 screenshots/dashboard.png
-🔧 Environment Variables
-Create a .env file using .env.example
+```
+
+---
+
+## 🔧 Environment Variables
+
+Create a `.env` file using `.env.example`
 
 Example:
 
+```env
 SECRET_KEY=your_secret_key
 FLASK_ENV=development
-🤝 Contributing
+```
+
+---
+
+## 🤝 Contributing
+
 Contributions are welcome!
 
-Fork the repository
-Create your feature branch
-Commit your changes
-Push to the branch
-Open a Pull Request
-📄 License
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
 This project is licensed under the MIT License.
 
-👨‍💻 Developer
+---
+
+## 👩‍💻 Developer
+
 Developed by Kritika Pokharel
 
-GitHub: https://github.com/kriitikaaaaaaa
-⭐ Support
+- GitHub: https://github.com/kriitikaaaaaaa
+
+---
+
+## ⭐ Support
+
 If you like this project, give it a ⭐ on GitHub!
