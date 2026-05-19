@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Finance Tracker{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  {% block head_extra %}{% endblock %}
+</head>
+<body class="app-body">
+  <div class="app-backdrop" aria-hidden="true"></div>
+  <div class="app-shell">
+    {% include 'partials/sidebar.html' %}
+    <div class="app-main">
+      {% include 'partials/topbar.html' %}
+      <main class="app-content">
+        {% include 'partials/flash.html' %}
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </div>
+  <div class="sidebar-overlay" id="sidebarOverlay" hidden></div>
+  <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

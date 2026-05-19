@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% set page_title = 'Analytics' %}
+{% set page_subtitle = 'Charts and insights (same as dashboard)' %}
+{% block title %}Analytics — Finance Tracker{% endblock %}
+{% block head_extra %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" defer></script>
+{% endblock %}
+{% block content %}
+
+<section class="grid grid--stats">
+  <article class="stat-card glass-panel">
+    <div class="stat-card__label">Total balance</div>
+    <div class="stat-card__value stat-card__value--accent">{{ '%.2f'|format(balance) }}</div>
+    <div class="stat-card__meta">All time</div>
+  </article>
+  <article class="stat-card glass-panel">
+    <div class="stat-card__label">Total income</div>
+    <div class="stat-card__value stat-card__value--income">{{ '%.2f'|format(total_income) }}</div>
+    <div class="stat-card__meta">All time</div>
+  </article>
+  <article class="stat-card glass-panel">
+    <div class="stat-card__label">Total expenses</div>
+    <div class="stat-card__value stat-card__value--expense">{{ '%.2f'|format(total_expense) }}</div>
+    <div class="stat-card__meta">All time</div>
+  </article>
+</section>
+
+<section class="grid grid--stats grid--stats-2">
+  <article class="stat-card glass-panel">
+    <div class="stat-card__label">Monthly savings</div>
+    <div class="stat-card__value">{{ '%.2f'|format(monthly_savings) }}</div>
+    <div class="stat-card__meta">This month</div>
+  </article>
+  <article class="stat-card glass-panel">
+    <div class="stat-card__label">Highest expense category</div>
+    <div class="stat-card__value stat-card__value--text">{{ highest_category or '—' }}</div>
+    <div class="stat-card__meta">This month snapshot</div>
+  </article>
+  <article class="stat-card glass-panel">
+    <div class="stat-card__label">Average monthly spending</div>
+    <div class="stat-card__value">{{ '%.2f'|format(avg_monthly_spend) }}</div>
+    <div class="stat-card__meta">Baseline</div>
+  </article>
+  <article class="stat-card glass-panel">
+    <div class="stat-card__label">Transactions this month</div>
+    <div class="stat-card__value stat-card__value--text">{{ tx_count_month }}</div>
+    <div class="stat-card__meta">Expenses</div>
+  </article>
+</section>
+
+<script type="application/json" id="dashboard-monthly-data">{{ monthly_overview | tojson }}</script>
+<script type="application/json" id="dashboard-category-data">{{ category_breakdown | tojson }}</script>
+
+<section class="grid grid--two">
+  <section class="glass-panel panel-section">
+    <div class="panel-section__head">
+      <h2 class="panel-section__title">Income vs expense</h2>
+      <p class="panel-section__desc">Last 6–12 months comparison</p>
+    </div>
+    <div class="chart-card">
+      <canvas id="chartIncomeExpense" aria-label="Income vs expense chart" role="img"></canvas>
+    </div>
+  </section>
+
+  <section class="glass-panel panel-section">
+    <div class="panel-section__head">
+      <h2 class="panel-section__title">Expense categories</h2>
+      <p class="panel-section__desc">Food • Shopping • Travel • Bills • Entertainment • Education (+ Other)</p>
+    </div>
+    <div class="chart-card">
+      <canvas id="chartCategoryPie" aria-label="Expense category pie chart" role="img"></canvas>
+    </div>
+    <div class="split-list">
+      <div class="split-list__head">
+        <div class="split-list__title">Breakdown</div>
+        <div class="split-list__muted">Share • Amount</div>
+      </div>
+      {% set total_cat = (category_breakdown | sum(attribute='total')) if category_breakdown else 0 %}
+      {% for row in category_breakdown[:7] %}
+        {% if row.total > 0 %}
+          {% set pct = (row.total / total_cat * 100) if total_cat else 0 %}
+          <div class="split-row">
+            <div class="split-row__left">
+              <span class="dot"></span>
+              <span class="split-row__label">{{ row.category }}</span>
+            </div>
+            <div class="split-row__right">
+              <span class="split-row__pct">{{ pct|round(0, 'floor')|int }}%</span>
+              <span class="split-row__amt">${{ '%.0f'|format(row.total) }}</span>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+      {% if not category_breakdown %}
+        <div class="split-row split-row--empty">No expense data yet.</div>
+      {% endif %}
+    </div>
+  </section>
+</section>
+
+<section class="grid grid--three">
+  <section class="glass-panel panel-section">
+    <div class="panel-section__head">
+      <h2 class="panel-section__title">Monthly expense trend</h2>
+      <p class="panel-section__desc">Spending changes over time</p>
+    </div>
+    <div class="chart-card chart-card--wide">
+      <canvas id="chartExpenseTrend" aria-label="Monthly expense trend chart" role="img"></canvas>
+    </div>
+  </section>
+
+  <section class="glass-panel panel-section">
+    <div class="panel-section__head">
+      <h2 class="panel-section__title">Budget progress</h2>
+      <p class="panel-section__desc">Monthly spending limit</p>
+    </div>
+    <div class="progress-block">
+      <div class="progress-meta">
+        <div class="progress-meta__left">
+          <div class="progress-meta__value">${{ '%.0f'|format(monthly_budget) }}</div>
+          <div class="progress-meta__label">Budget</div>
+        </div>
+        <div class="progress-meta__right">
+          <div class="progress-meta__value">${{ '%.0f'|format(budget_remaining) }}</div>
+          <div class="progress-meta__label">Remaining</div>
+        </div>
+      </div>
+      <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ budget_spent_pct|round(0, 'floor')|int }}">
+        <div class="progress-bar__fill" style="width: {{ budget_spent_pct|round(0, 'floor')|int }}%"></div>
+      </div>
+      <div class="progress-foot">
+        <span>{{ budget_spent_pct|round(0, 'floor')|int }}% spent</span>
+        <span class="muted">This month</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="glass-panel panel-section">
+    <div class="panel-section__head">
+      <h2 class="panel-section__title">Savings overview</h2>
+      <p class="panel-section__desc">Goal tracking</p>
+    </div>
+    <div class="progress-block">
+      <div class="progress-meta">
+        <div class="progress-meta__left">
+          <div class="progress-meta__value">${{ '%.0f'|format(monthly_savings) }}</div>
+          <div class="progress-meta__label">Savings (month)</div>
+        </div>
+        <div class="progress-meta__right">
+          <div class="progress-meta__value">{{ savings_goal_pct|round(0, 'floor')|int }}%</div>
+          <div class="progress-meta__label">Goal progress</div>
+        </div>
+      </div>
+      <div class="progress-bar progress-bar--primary" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ savings_goal_pct|round(0, 'floor')|int }}">
+        <div class="progress-bar__fill" style="width: {{ savings_goal_pct|round(0, 'floor')|int }}%"></div>
+      </div>
+      <div class="progress-foot">
+        <span>Goal: ${{ '%.0f'|format(savings_goal) }}</span>
+        <span class="muted">Configurable</span>
+      </div>
+    </div>
+  </section>
+</section>
+
+<section class="glass-panel panel-section">
+  <div class="panel-section__head">
+    <h2 class="panel-section__title">Spending insights</h2>
+    <p class="panel-section__desc">Auto-generated highlights</p>
+  </div>
+  <div class="insights">
+    {% for i in insights %}
+      <div class="insight insight--{{ i.tone }}">
+        <div class="insight__title">{{ i.title }}</div>
+        <div class="insight__detail">{{ i.detail }}</div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% endblock %}
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}" defer></script>
+{% endblock %}

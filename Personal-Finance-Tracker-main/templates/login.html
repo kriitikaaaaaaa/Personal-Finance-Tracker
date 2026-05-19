@@ -1,0 +1,26 @@
+{% extends "auth_base.html" %}
+{% block title %}Login — Finance Tracker{% endblock %}
+{% block content %}
+<section class="auth-card glass-panel">
+  <h2 class="auth-card__heading">Welcome back</h2>
+  <p class="auth-card__text">Sign in to manage income, expenses, and your dashboard.</p>
+
+  <form class="form-stack" method="post" action="{{ url_for('login') }}" id="loginForm" novalidate>
+    <div class="field">
+      <label class="field__label" for="username">Username</label>
+      <input class="field__input" type="text" id="username" name="username" autocomplete="username" required minlength="2">
+      <p class="field__error" data-error-for="username" hidden></p>
+    </div>
+    <div class="field">
+      <label class="field__label" for="password">Password</label>
+      <input class="field__input" type="password" id="password" name="password" autocomplete="current-password" required>
+      <p class="field__error" data-error-for="password" hidden></p>
+    </div>
+    <button type="submit" class="btn btn--primary btn--block">Sign in</button>
+  </form>
+
+  <p class="auth-card__footer">
+    New here? <a href="{{ url_for('register') }}">Create an account</a>
+  </p>
+</section>
+{% endblock %}

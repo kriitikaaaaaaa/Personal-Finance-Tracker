@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Auth — Finance Tracker{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body class="auth-body">
+  <div class="auth-backdrop" aria-hidden="true"></div>
+  <div class="auth-wrap">
+    <div class="auth-brand glass-panel">
+      <span class="auth-brand__mark" aria-hidden="true">FT</span>
+      <div>
+        <h1 class="auth-brand__title">Finance Tracker</h1>
+        <p class="auth-brand__tagline">Simple, professional expense and income tracking.</p>
+      </div>
+    </div>
+    {% include 'partials/flash.html' %}
+    {% block content %}{% endblock %}
+  </div>
+  <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+</body>
+</html>

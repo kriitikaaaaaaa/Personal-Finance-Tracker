@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% set page_title = 'Income' %}
+{% set page_subtitle = 'Record and review inflows' %}
+{% block title %}Income — Finance Tracker{% endblock %}
+{% block content %}
+
+<div class="grid grid--two grid--split">
+  <section class="glass-panel panel-section">
+    <div class="panel-section__head">
+      <h2 class="panel-section__title">Add income</h2>
+      <p class="panel-section__desc">Salary, freelance, refunds, etc.</p>
+    </div>
+    <form class="form-stack" method="post" action="{{ url_for('income') }}" id="incomeForm" novalidate>
+      <div class="field">
+        <label class="field__label" for="source">Source</label>
+        <input class="field__input" type="text" id="source" name="source" required maxlength="200" placeholder="e.g. Employer — Paycheck">
+        <p class="field__error" data-error-for="source" hidden></p>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label class="field__label" for="amount">Amount</label>
+          <input class="field__input" type="number" id="amount" name="amount" step="0.01" min="0.01" required placeholder="0.00">
+          <p class="field__error" data-error-for="amount" hidden></p>
+        </div>
+        <div class="field">
+          <label class="field__label" for="income_date">Date</label>
+          <input class="field__input" type="date" id="income_date" name="income_date" required>
+        </div>
+      </div>
+      <button type="submit" class="btn btn--primary">Add income</button>
+    </form>
+  </section>
+
+  <section class="glass-panel panel-section">
+    <div class="panel-section__head">
+      <h2 class="panel-section__title">At a glance</h2>
+      <p class="panel-section__desc">Tip: use the dashboard for balance and trends</p>
+    </div>
+    <ul class="hint-list">
+      <li>Income entries feed your total balance on the dashboard.</li>
+      <li>Monthly overview bars compare inflow vs outflow by month.</li>
+      <li>Future: CSV export and recurring income templates.</li>
+    </ul>
+  </section>
+</div>
+
+<section class="glass-panel panel-section panel-section--table">
+  <div class="panel-section__head">
+    <h2 class="panel-section__title">Income history</h2>
+    <p class="panel-section__desc">Newest first</p>
+  </div>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Source</th>
+          <th class="data-table__num">Amount</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if income_rows %}
+          {% for row in income_rows %}
+            <tr>
+              <td>{{ row.source }}</td>
+              <td class="data-table__num data-table__num--income">{{ '%.2f'|format(row.amount|float) }}</td>
+              <td>{{ row.income_date }}</td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="3" class="data-table__empty">No income recorded yet.</td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+{% endblock %}

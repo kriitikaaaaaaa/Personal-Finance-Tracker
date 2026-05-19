@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% set page_title = 'Settings' %}
+{% set page_subtitle = 'Account preferences (coming soon)' %}
+{% block title %}Settings — Finance Tracker{% endblock %}
+{% block content %}
+
+<section class="glass-panel panel-section">
+  <div class="panel-section__head">
+    <h2 class="panel-section__title">Settings</h2>
+    <p class="panel-section__desc">Placeholder for profile, currency, and notifications.</p>
+  </div>
+  <div class="placeholder-block">
+    <p class="panel-section__muted">You are signed in as <strong>{{ session.username }}</strong>. Logout is available in the sidebar.</p>
+  </div>
+</section>
+
+{% endblock %}

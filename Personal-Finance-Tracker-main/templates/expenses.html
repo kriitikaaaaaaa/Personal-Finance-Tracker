@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% set page_title = 'Expenses' %}
+{% set page_subtitle = 'Track and categorize spending' %}
+{% block title %}Expenses — Finance Tracker{% endblock %}
+{% block content %}
+
+<div class="grid grid--two grid--split">
+  <section class="glass-panel panel-section">
+    <div class="panel-section__head">
+      <h2 class="panel-section__title">Add expense</h2>
+      <p class="panel-section__desc">Log a new purchase or bill</p>
+    </div>
+    <form class="form-stack" method="post" action="{{ url_for('expenses') }}" id="expenseForm" novalidate>
+      <input type="hidden" name="action" value="add">
+      <div class="field">
+        <label class="field__label" for="title">Title</label>
+        <input class="field__input" type="text" id="title" name="title" required maxlength="200" placeholder="e.g. Groceries">
+        <p class="field__error" data-error-for="title" hidden></p>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label class="field__label" for="amount">Amount</label>
+          <input class="field__input" type="number" id="amount" name="amount" step="0.01" min="0.01" required placeholder="0.00">
+          <p class="field__error" data-error-for="amount" hidden></p>
+        </div>
+        <div class="field">
+          <label class="field__label" for="expense_date">Date</label>
+          <input class="field__input" type="date" id="expense_date" name="expense_date" required>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field__label" for="category">Category</label>
+        <select class="field__input" id="category" name="category" required>
+          {% for c in categories %}
+            <option value="{{ c }}">{{ c }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="btn btn--primary">Add expense</button>
+    </form>
+  </section>
+
+  <section class="glass-panel panel-section">
+    <div class="panel-section__head">
+      <h2 class="panel-section__title">Edit expense</h2>
+      <p class="panel-section__desc">Select “Edit” on a row to load values here</p>
+    </div>
+    <form class="form-stack" method="post" action="{{ url_for('expenses') }}" id="expenseEditForm" novalidate hidden>
+      <input type="hidden" name="action" value="update">
+      <input type="hidden" name="expense_id" id="edit_expense_id" value="">
+      <div class="field">
+        <label class="field__label" for="edit_title">Title</label>
+        <input class="field__input" type="text" id="edit_title" name="title" required maxlength="200">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label class="field__label" for="edit_amount">Amount</label>
+          <input class="field__input" type="number" id="edit_amount" name="amount" step="0.01" min="0.01" required>
+        </div>
+        <div class="field">
+          <label class="field__label" for="edit_expense_date">Date</label>
+          <input class="field__input" type="date" id="edit_expense_date" name="expense_date" required>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field__label" for="edit_category">Category</label>
+        <select class="field__input" id="edit_category" name="category" required>
+          {% for c in categories %}
+            <option value="{{ c }}">{{ c }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="btn-row">
+        <button type="submit" class="btn btn--secondary">Save changes</button>
+        <button type="button" class="btn btn--ghost" id="cancelEditExpense">Cancel</button>
+      </div>
+    </form>
+    <p class="panel-section__muted" id="editExpenseHint">Use the table to edit or delete entries.</p>
+  </section>
+</div>
+
+<section class="glass-panel panel-section panel-section--table">
+  <div class="panel-section__head">
+    <h2 class="panel-section__title">Expense list</h2>
+    <p class="panel-section__desc">All recorded expenses for your account</p>
+  </div>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Category</th>
+          <th class="data-table__num">Amount</th>
+          <th>Date</th>
+          <th class="data-table__actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if expenses %}
+          {% for e in expenses %}
+            <tr data-expense-id="{{ e.id }}"
+                data-title="{{ e.title }}"
+                data-amount="{{ e.amount }}"
+                data-category="{{ e.category }}"
+                data-date="{{ e.expense_date }}">
+              <td>{{ e.title }}</td>
+              <td><span class="badge badge--category">{{ e.category }}</span></td>
+              <td class="data-table__num data-table__num--expense">{{ '%.2f'|format(e.amount|float) }}</td>
+              <td>{{ e.expense_date }}</td>
+              <td class="data-table__actions">
+                <button type="button" class="btn btn--xs btn--ghost js-edit-expense">Edit</button>
+                <form method="post" action="{{ url_for('expenses') }}" class="inline-form" onsubmit="return confirm('Delete this expense?');">
+                  <input type="hidden" name="action" value="delete">
+                  <input type="hidden" name="expense_id" value="{{ e.id }}">
+                  <button type="submit" class="btn btn--xs btn--danger">Delete</button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="5" class="data-table__empty">No expenses yet. Add your first one above.</td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+{% endblock %}
