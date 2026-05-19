@@ -1,0 +1,16 @@
+<header class="topbar">
+  <button type="button" class="topbar__menu" id="sidebarToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="sidebar">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="topbar__titles">
+    <h1 class="topbar__page">{{ page_title or 'Dashboard' }}</h1>
+    <p class="topbar__hint">{{ page_subtitle or 'Overview of your finances' }}</p>
+  </div>
+  <div class="topbar__user glass-panel glass-panel--sm">
+    <span class="topbar__avatar" aria-hidden="true">{{ (session.username or '?')[0]|upper }}</span>
+    <div>
+      <div class="topbar__name">{{ session.username or 'User' }}</div>
+      <div class="topbar__role">Member</div>
+    </div>
+  </div>
+</header>

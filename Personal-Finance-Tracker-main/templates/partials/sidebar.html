@@ -1,0 +1,36 @@
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar__brand">
+    <span class="sidebar__logo" aria-hidden="true">FT</span>
+    <div>
+      <div class="sidebar__title">Finance</div>
+      <div class="sidebar__subtitle">Expense Tracker</div>
+    </div>
+  </div>
+
+  <nav class="sidebar__nav" aria-label="Main">
+    <a class="nav-link {% if request.endpoint == 'dashboard' %}is-active{% endif %}" href="{{ url_for('dashboard') }}">
+      <span class="nav-link__icon" aria-hidden="true">▣</span> Dashboard
+    </a>
+    <a class="nav-link {% if request.endpoint == 'expenses' %}is-active{% endif %}" href="{{ url_for('expenses') }}">
+      <span class="nav-link__icon" aria-hidden="true">▤</span> Expenses
+    </a>
+    <a class="nav-link {% if request.endpoint == 'income' %}is-active{% endif %}" href="{{ url_for('income') }}">
+      <span class="nav-link__icon" aria-hidden="true">▲</span> Income
+    </a>
+    <a class="nav-link {% if request.endpoint == 'analytics' %}is-active{% endif %}" href="{{ url_for('analytics') }}">
+      <span class="nav-link__icon" aria-hidden="true">◎</span> Analytics
+    </a>
+    <a class="nav-link {% if request.endpoint == 'reports' %}is-active{% endif %}" href="{{ url_for('reports') }}">
+      <span class="nav-link__icon" aria-hidden="true">▦</span> Reports
+    </a>
+    <a class="nav-link {% if request.endpoint == 'settings' %}is-active{% endif %}" href="{{ url_for('settings') }}">
+      <span class="nav-link__icon" aria-hidden="true">⚙</span> Settings
+    </a>
+  </nav>
+
+  <div class="sidebar__footer">
+    <a class="nav-link nav-link--logout" href="{{ url_for('logout') }}">
+      <span class="nav-link__icon" aria-hidden="true">⎋</span> Logout
+    </a>
+  </div>
+</aside>
